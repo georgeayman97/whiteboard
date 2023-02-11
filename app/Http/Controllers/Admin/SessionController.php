@@ -37,6 +37,22 @@ class SessionController extends Controller
         return view('admin.sessions.createSession',compact('session','course_id','course'));
     }
 
+    public function changeStatus($id)
+    {
+        if(! $id )
+            abort(404);
+
+        $session = Session::find($id);
+        if($session->status == 'active'){
+            $session->status = 'disabled';
+            $session->save();
+        }elseif($session->status == 'disabled'){
+            $session->status = 'active';
+            $session->save();
+        }
+        return redirect()->back();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

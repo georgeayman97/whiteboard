@@ -15,7 +15,11 @@ class AccountsController extends Controller
      */
     public function index()
     {
-        $requestedAccounts = User::all()->where('status','=','request');
+        if(auth()->user()->role == 'doctor'){
+            $requestedAccounts = User::where('role','!=','doctor')->where('faculty_id',auth()->user()->faculty_id)->where('status','=','request')->get();
+        }else{
+            $requestedAccounts = User::all()->where('role','!=','doctor')->where('status','=','request');
+        }
         
         return view('admin.accounts.allAccounts',[
             'reqs' => $requestedAccounts,

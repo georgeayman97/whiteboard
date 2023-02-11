@@ -15,11 +15,24 @@
 				</div>
 			</div>
 
-			<div class="form-group col-12">
+			<div class="form-group col-9">
 				<label class="col-form-label">Session title</label>
 				<div>
 					<input class="form-control @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name',$session->name)}}">
 					@error('name')
+					<p class="invalid-feedback">{{ $message }}</p>
+					@enderror
+				</div>
+			</div>
+
+			<div class="form-group col-3">
+				<label class="col-form-label">Status</label>
+				<div>
+					<select name="status" id="status" class="form-control @error('status') is-invalid @enderror">
+						<option value="active" {{'active' == old('status',$session->status) ? 'selected':''}}>Active</option>
+						<option value="disabled" {{'disabled' == old('status',$session->status) ? 'selected':''}}>Disabled</option>
+					</select>
+					@error('status')
 					<p class="invalid-feedback">{{ $message }}</p>
 					@enderror
 				</div>

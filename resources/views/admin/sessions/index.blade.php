@@ -44,8 +44,9 @@
                                         <th>NAME</th>
                                         <th>DESCRIPTION</th>
                                         <th>COURSE NAME</th>
+                                        <th>STATUS</th>
                                         <th>CREATED AT</th>
-                                        <th>UPDATED AT</th>
+                                        <th>Action</th>
                                         <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
@@ -62,8 +63,17 @@
                                         <td>{{ $session->name }}</td>
                                         <td>{{ $session->description }}</td>
                                         <td>{{ $course->name }}</td>
+                                        @if($session->status == "disabled")
+                                        <td class="btn button-md red radius-xl text-center" style="margin-top: 4px;">{{ $session->status }}</td>
+                                        @else
+                                        <td class="btn button-md green radius-xl text-center" style="margin-top: 4px;">{{ $session->status }}</td>
+                                        @endif
                                         <td>{{ $session->created_at }}</td>
-                                        <td>{{ $session->updated_at }}</td>
+                                        @if($session->status == 'active')
+                                        <td><a href="{{ route('sessions.changeStatus', $session->id)}}" class="btn btn-sm btn-dark">Disable</a></td>
+                                        @else
+                                        <td><a href="{{ route('sessions.changeStatus', $session->id)}}" class="btn btn-sm btn-dark">Activate</a></td>
+                                        @endif
                                         <td><a href="{{ route('sessions.edit', $session->id)}}" class="btn btn-sm btn-dark">Edit</a></td>
                                         <td><form action="{{ route('sessions.destroy', $session->id)}}" method="post">
                                             @csrf

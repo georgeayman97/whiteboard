@@ -20,7 +20,13 @@ class AuthUsersController extends Controller
      */
     public function index()
     {  
-        $users = User::where('role','!=','admin')->orderBy('created_at','desc')->with('faculty')->paginate(20);
+        if(auth()->user()->role == 'doctor'){
+            $users = User::where('role','!=','admin')->where('role','!=','doctor')->orderBy('created_at','desc')->with('faculty')->whereHas('faculty', function ($query) {
+                return $query->where('id', '=', auth()->user()->faculty_id);
+            })->paginate(20);
+        }else{
+            $users = User::where('role','!=','admin')->where('role','!=','doctor')->orderBy('created_at','desc')->with('faculty')->paginate(20);
+        }
         $success = session()->get('success');
         return view('admin.accounts.index',[
             'users' => $users,

@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function(){
     // -----------------------------------------------------Sessions--------------------------------------------------------
     Route::resource('/admin/sessions',SessionController::class)->except('create');
     Route::get('admin/sessions/create/{id}',[SessionController::class,'create'])->name('sessions.create');
+    Route::get('admin/sessions/changeStatus/{id}',[SessionController::class,'changeStatus'])->name('sessions.changeStatus');
     // -----------------------------------------------------Accounts--------------------------------------------------------
     Route::resource('/admin/accounts',AuthUsersController::class)->except('index');
     Route::resource('/admin/req',AccountsController::class);

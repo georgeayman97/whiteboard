@@ -11,7 +11,7 @@ class Session extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','description','course_id','session_link'
+        'name','description','course_id','session_link','status'
     ];
 
     public static function validateRules()

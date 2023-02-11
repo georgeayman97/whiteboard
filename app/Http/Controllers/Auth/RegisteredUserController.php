@@ -26,7 +26,11 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        $faculties = Faculty::all();
+        if(auth()->user()->role == 'doctor'){
+            $faculties = Faculty::where('id',auth()->user()->faculty_id)->get();
+        }else{
+            $faculties = Faculty::all();
+        }
         return view('auth.register',['faculties'=>$faculties]);
     }
 
@@ -151,7 +155,11 @@ class RegisteredUserController extends Controller
     
     public function showForgetPass()
     {
-        $users = User::where('forget_password',1)->paginate(20);
+        if(auth()->user()->role == 'doctor'){
+            $users = User::where('faculty_id',auth()->user()->faculty_id)->where('forget_password',1)->paginate(20);
+        }else{
+            $users = User::where('forget_password',1)->paginate(20);
+        }
         $success = session()->get('success');
         return view('admin.accounts.forgetPass',[
             'users' => $users,
