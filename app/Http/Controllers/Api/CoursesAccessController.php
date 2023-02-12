@@ -17,7 +17,7 @@ class CoursesAccessController extends Controller
     public function index(Request $request) {
         
         $user = Auth::guard('sanctum')->user();
-        $courses = Course::latest()->with('doctor')->where('subject_id',$request->subject_id)->get();
+        $courses = Course::where('status',Course::STATUS_ACTIVE)->latest()->with('doctor')->where('subject_id',$request->subject_id)->get();
 
         foreach($courses as $course){
             // $path = getcwd().'\uploads'.'\\'.$course->image_path;
@@ -59,7 +59,7 @@ class CoursesAccessController extends Controller
         $ifenrolled = CourseAccess::where('user_id',$user->id)->where('course_id',$request->course_id)->get()->pluck('status')->contains('enrolled');
 
 
-        $sessions = Session::where('course_id',$request->course_id)
+        $sessions = Session::where('course_id',$request->course_id)->where('status','active')
         ->select('id', 'name')->get()->sortByDesc('created_at');
     
         return Response::json([
